@@ -59,6 +59,7 @@ public class Solution implements Runnable {
         }
 
     }
+
     public HashMap<String,Table> tableDataInputHelper()
     {
 
@@ -99,6 +100,7 @@ public class Solution implements Runnable {
 
         return  db;
     }
+
     public List<Query>  queriesInputHelper()
     {
         int numberOfQueries = readLineAsInteger();
@@ -159,10 +161,6 @@ public class Solution implements Runnable {
         {
             query.joinColumnNameleft=line4[3].split("\\.")[1];
         }
-
-
-
-
         if(line1.length == 2)
         {
             query.selectAll=true;
@@ -182,7 +180,6 @@ public class Solution implements Runnable {
                 {
                     query.addColumNameToRight(tokens[1]);
                 }
-
             }
         }
 
