@@ -2,8 +2,10 @@ package com.tigerit.exam;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.tigerit.exam.IO.*;
 
@@ -16,9 +18,100 @@ import static com.tigerit.exam.IO.*;
 public class Solution implements Runnable {
     @Override
     public void run() {
-
+        int numberOfTestCases=readLineAsInteger();
+        for(int testCaseNumber=1;testCaseNumber<=numberOfTestCases;testCaseNumber++)
+        {
+            executeEachTestCase(testCaseNumber);
+        }
     }
 
+    public void executeEachTestCase(int testCaseNumber)
+    {
+        System.out.println("Test: "+testCaseNumber);
+        HashMap<String,Table> db  = tableDataInputHelper();
+        List<Query>  queries= queriesInputHelper();
+        int testNumber=1;
+        for (Query query:queries)
+        {
+            // System.out.println(query);
+            List<String> leftColumnNames = new ArrayList<>();
+            List<String> rightColumnNames = new ArrayList<>();
+            if(query.isAllColumnNeedToBeSelect())
+            {
+                leftColumnNames = db.get(query.leftTableName).columnNames;
+                rightColumnNames = db.get(query.rightTableName).columnNames;
+            }
+            else
+            {
+                leftColumnNames=query.columnNamesForSelectFromLeft;
+                rightColumnNames = query.columnNamesForSelectFromRight;
+            }
+            JoinAndPrint(
+                    db.get(query.leftTableName).values,
+                    db.get(query.rightTableName).values,
+                    query.joinColumnNameleft,
+                    query.joinColumnNameRight,
+                    leftColumnNames,
+                    rightColumnNames
+            );
+            testNumber++;
+            System.out.println();
+        }
+
+    }
+    public HashMap<String,Table> tableDataInputHelper()
+    {
+
+        HashMap<String,Table> db= new HashMap<>();
+        int nT=readLineAsInteger();
+        while (nT!=0)
+        {
+
+            nT--;
+            String tableName=readLine();
+            int nC = readLineAsInteger();
+            int nD = readLineAsInteger();
+            String columnNames[] =splitUsingWhiteSpace(readLine());
+            List<Integer> columsValue[]= new ArrayList[nC];
+            for(int index=0;index<columsValue.length;index++)
+            {
+                columsValue[index] = new ArrayList<>();
+            }
+            while(nD !=0)
+            {
+                nD--;
+                String data[]=splitUsingWhiteSpace(readLine());
+                if(data.length != columsValue.length) return null;
+
+                for(int index=0;index<columsValue.length;index++)
+                {
+                    columsValue[index].add(Integer.parseInt(data[index]));
+                }
+
+            }
+            Table table = new Table();
+            table.columnNames= Arrays.stream(columnNames).map(x->x).collect(Collectors.toList());
+            for(int index=0;index<columsValue.length;index++) {
+                table.addValueToMap(columnNames[index], columsValue[index]);
+            }
+            db.put(tableName,table);
+        }
+
+        return  db;
+    }
+    public List<Query>  queriesInputHelper()
+    {
+        int numberOfQueries = readLineAsInteger();
+        List<Query> queries = new ArrayList<>();
+
+        while (numberOfQueries!=0)
+        {
+            numberOfQueries--;
+            queries.add(queryInputAndParse());
+            readLine();
+        }
+        return queries;
+    }
 
     /*
     This methods Handles One Query input and Store query data in query class
@@ -192,10 +285,6 @@ public class Solution implements Runnable {
 
 
     }
-    /*
-    Helper methods
-
-   */
 
     public String[] splitUsingWhiteSpace(String s)
     {
@@ -205,19 +294,6 @@ public class Solution implements Runnable {
             out = s.split(" ");
         }
         return out;
-    }
-    public List<Query>  queriesInputHelper()
-    {
-        int numberOfQueries = readLineAsInteger();
-        List<Query> queries = new ArrayList<>();
-
-        while (numberOfQueries!=0)
-        {
-            numberOfQueries--;
-            queries.add(queryInputAndParse());
-            readLine();
-        }
-        return queries;
     }
 
     /*
