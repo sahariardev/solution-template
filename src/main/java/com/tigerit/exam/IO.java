@@ -21,7 +21,9 @@ public class IO {
         String value;
         try {
             value = reader.readLine();
+
         } catch (IOException ex) {
+
             value = null;
         }
         return value;
