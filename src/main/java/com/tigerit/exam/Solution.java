@@ -1,12 +1,9 @@
 package com.tigerit.exam;
 
 
-import sun.misc.GC;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
+
 import java.util.stream.Collectors;
 
 import static com.tigerit.exam.IO.*;
@@ -21,6 +18,7 @@ import static com.tigerit.exam.IO.readLineAsInteger;
 public class Solution implements Runnable {
     @Override
     public void run() {
+
 
         //String string = readLine();
         //queryInputAndParse();
@@ -428,36 +426,31 @@ public class Solution implements Runnable {
 
     }
 
-    class CompareTwoRow implements Comparator<String>
-    {
+    class CompareTwoRow implements Comparator<String> {
 
         @Override
         public int compare(String row1, String row2) {
 
-            String row_one_values []= row1.split(" ");
-            String row_two_values []= row2.split(" ");
+            String row_one_values[] = row1.split(" ");
+            String row_two_values[] = row2.split(" ");
 
-            for(int index=0;index<row_one_values.length;index++)
-            {
-                if(intVal(row_one_values[index])>intVal(row_two_values[index]))
-                {
+            for (int index = 0; index < row_one_values.length; index++) {
+                if (intVal(row_one_values[index]) > intVal(row_two_values[index])) {
                     return 1;
-                }
-                else if(intVal(row_one_values[index])<intVal(row_two_values[index]))
-                {
+                } else if (intVal(row_one_values[index]) < intVal(row_two_values[index])) {
                     return -1;
                 }
             }
             return 0;
 
 
-
         }
-        public int intVal(String val)
-        {
+
+        public int intVal(String val) {
             return Integer.parseInt(val);
         }
     }
+
 }
 
 
