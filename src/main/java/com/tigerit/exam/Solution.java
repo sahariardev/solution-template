@@ -171,7 +171,7 @@ public class Solution implements Runnable {
         {
             query.joinColumnNameleft=line4[3].split("\\.")[1];
         }
-        if(line1.length == 2)
+        if(line1[1].equals("*"))
         {
             query.selectAll=true;
         }
@@ -181,6 +181,7 @@ public class Solution implements Runnable {
 
             for(int index=1;index<line1.length;index++)
             {
+
                 String tokens[]=line1[index].replace(",","").split("\\.");
                 if(tokens[0].equals(query.leftTableName)||tokens[0].equals(query.leftTableNameShortName))
                 {
